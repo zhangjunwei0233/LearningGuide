@@ -1,6 +1,13 @@
 ---
-title: Welcome to Quartz
+title: 欢迎来到 Learning Guide!
 ---
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+**Learning Guide** 是一个为 AI 入门者设计的学习项目，旨在提供系统性的**学习路线图**与 **Cheatsheet**。
+
+
+**目前已支持的模块包括：**
+
+- 概率论与数理统计：[[概统学习总览]]
+- 机器学习：[[机器学习总览]]
+
+可**通过**右侧的 **Graph View** **在节点间导航**。
