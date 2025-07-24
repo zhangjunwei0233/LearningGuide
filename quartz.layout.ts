@@ -38,11 +38,7 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.RecentNotes({
-      title: "Recent Notes",
-      limit: 5,
-      showTags: true,
-    }),
+    Component.Explorer(),
   ],
   right: [
     Component.Graph({
@@ -73,11 +69,7 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.RecentNotes({
-      title: "Recent Notes",
-      limit: 5,
-      showTags: true,
-    }),
+    Component.Explorer(),
   ],
   right: [],
 }

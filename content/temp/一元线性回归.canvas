@@ -1,0 +1,34 @@
+{
+	"nodes":[
+		{"id":"8edb1fe8551247f8","type":"group","x":2940,"y":-1654,"width":1708,"height":1229,"label":"a,b的点估计"},
+		{"id":"bc7c6c8a07346243","type":"text","text":"# 数学模型\n设一元线性函数为：\n$$\n\\mu(x)=a+bx\n$$\n则样本可以表示为：\n$$\nY=a+bx+\\epsilon\n$$\n> $a+bx$为线性函数项（b为回归系数）\n> $\\epsilon$为随机误差项\n\n","x":1520,"y":-684,"width":900,"height":483},
+		{"id":"16abcc92bf1a1d78","type":"text","text":"**ab的估计**","x":2581,"y":-903,"width":162,"height":60},
+		{"id":"d66bfd76babac183","type":"text","text":"**线性假设的检验**","x":2600,"y":-2037,"width":230,"height":60},
+		{"id":"9da3bbcc2bfc9d95","type":"text","text":"# 最大似然法\n使用**最大似然估计法**估计a, b取值：\n1. 有$Y_{i} \\sim N(a+bx_{i}, \\sigma^{2})$\n2. 对于所有的i，有$Y_{i}$相互独立。于是最大似然函数写为：\n\t$$\n\tL(a,b)=\\prod_{i=1}^{n} \\frac{1}{\\sqrt{ 2\\pi }\\sigma}e^{- \\frac{(y_{i}-a-bx_{i})^{2}}{2\\sigma^{2}}}=\\left( \\frac{1}{\\sqrt{ 2\\pi }\\sigma} \\right)^{2} e^{- \\frac{\\sum(y_{i}-a-bx_{i})^{2}}{2\\sigma^{2}}}\n\t$$\n3. 为了求使得$L$最大的$a,b$，只需要求使得$\\sum(y_{i}-a-bx_{i})^{2}$最小的$a,b$。\n4. 利用偏导数得到：\n\t$$\n\t\\begin{cases}\n\t\\hat{a}=\\bar{y}-\\hat{b}\\bar{x} \\\\\n\t\\hat{b}= \\frac{\\sum(x_{i}-\\bar{x})(y_{i}-\\bar{y})}{\\sum(x_{i}-\\bar{x})^{2}} \n\t\\end{cases}\n\t$$\n","x":3220,"y":-1634,"width":860,"height":602,"color":"5"},
+		{"id":"8c01c2ae6aa675f4","type":"text","text":"若$\\epsilon$为正态变量","x":2960,"y":-1363,"width":216,"height":60,"color":"1"},
+		{"id":"6c933d86dd6f020e","type":"text","text":"# 结论\n**经验回归函数**为：\n$$\n\\hat{\\mu}(x)=\\hat{a}+\\hat{b}x\n$$\n其中$\\hat{a},\\hat{b}$的求法已经在推导中给出","x":4220,"y":-1489,"width":408,"height":313},
+		{"id":"a8abe3629ad4bdbb","type":"text","text":"若$\\epsilon$不为正态变量","x":2960,"y":-674,"width":250,"height":60,"color":"1"},
+		{"id":"c1c341f22db1fe24","type":"text","text":"# 假设检验\n设备择假设为线性性显著，即$H_{0}:b=0,H_{1}:b\\neq{0}$\n可以证明$\\hat{b} \\sim N(b, \\sigma^{2} /S_{xx})$，于是有\n$$\n\\frac{\\hat{b}-b}{\\hat{\\sigma}}\\sqrt{ S_{xx} } \\sim t(n-2)\n$$\n故$H_{0}$的拒绝域为：\n$$\n|t|=\\frac{|\\hat{b}|}{\\sigma}\\sqrt{ S_{x x} }\\geq t_{\\frac{\\alpha}{2}}(n-2)\n$$","x":3040,"y":-2247,"width":748,"height":479,"color":"5"},
+		{"id":"d3b5babdd2b4edf5","type":"text","text":"# 最小二乘法\n使用最小二乘法估计a，b。基本思想为使得**方差最小化**\n1. 构造偏差平方和函数\n\t$$\n\tQ(a,b)=\\sum_{i=1}^{n}(a+bx_{i}-y_{i})^{2}\n\t$$\n2. 找到$a,b$，使得$Q$最小","x":3280,"y":-843,"width":879,"height":398,"color":"5"},
+		{"id":"f7de0ea718aa68ee","type":"text","text":"# 应用背景\n研究变量x与y之间的关系，以x为自变量\n- 取定x的一组值$x_{1},\\dots,x_{n}$，$Y_{1},\\dots,Y_{n}$是对应的观察结果\n- 则称$(x_{1},Y_{1}),\\dots,(x_{n},Y_{n})$是一个样本，对应的样本值记为小写\n- 设$\\mu(x)$为Y关于x的**回归函数**，简称回归\n\n问：如何用样本估计$\\mu(x)$？","x":620,"y":-643,"width":827,"height":400},
+		{"id":"65feda48d867ddeb","type":"text","text":"$\\sigma$**的点估计**","x":2581,"y":395,"width":172,"height":60},
+		{"id":"567aae129b371e41","type":"text","text":"# 矩估计法\n根据**定理2**，在$\\mu$未知的情况下，根据残差的平方和估计标准差的大小：\n1. 残差的平方和为\n\t$$\n\tQ_{e}=\\sum_{i=1}^{n}(y_{i}-\\hat{a}-\\hat{b}x_{i})^{2}=\\sum_{i=1}^{n}(y_{i}-\\bar{y}-\\hat{b}(x-\\bar{x}))^{2}=\\dots=S_{yy}-\\hat{b}S_{xy}\n\t$$\n2. $Q_{e}$满足如下分布：\n\t$$\n\t\\frac{Q_{e}}{\\sigma^{2}} \\sim \\chi^{2}(n-2)\n\t$$\n3. 则根据矩估计法，有$\\sigma^{2}=\\frac{Q_{e}}{n-2}=\\frac{S_{yy}-\\hat{b}S_{xy}}{n-2}$\n","x":2875,"y":160,"width":1042,"height":746,"color":"5"},
+		{"id":"2770e7906a97a8d0","type":"text","text":"之所以$\\chi^{2}$分布中是$n-2$，是因为两点确定一条直线，只有当$n=3$的时候方差才开始有意义","x":3115,"y":1040,"width":465,"height":143,"color":"1"},
+		{"id":"1f43bf3a4c056823","type":"text","text":"# b的置信区间\n由上面线性假设的检验知\n$$\n\\frac{\\hat{b}-b}{\\hat{\\sigma}}\\sqrt{ S_{xx} }\\sim t(n-2)\n$$\n于是b的置信水平为$1-\\alpha$的置信区间为：\n$$\n\\left( \\hat{b}\\pm t_{\\frac{\\alpha}{2}}(n-2) \\frac{\\hat{\\sigma}}{\\sqrt{ S_{x x} }} \\right)\n$$","x":2960,"y":-340,"width":1120,"height":444}
+	],
+	"edges":[
+		{"id":"1854a39662c7cfb8","fromNode":"f7de0ea718aa68ee","fromSide":"right","toNode":"bc7c6c8a07346243","toSide":"left"},
+		{"id":"d6b0e490f375d868","fromNode":"8c01c2ae6aa675f4","fromSide":"right","toNode":"9da3bbcc2bfc9d95","toSide":"left","toEnd":"none"},
+		{"id":"3fb72ad179166d6e","fromNode":"9da3bbcc2bfc9d95","fromSide":"right","toNode":"6c933d86dd6f020e","toSide":"left"},
+		{"id":"e9e9a82e48c73be6","fromNode":"bc7c6c8a07346243","fromSide":"right","toNode":"16abcc92bf1a1d78","toSide":"left"},
+		{"id":"5979ce006b168735","fromNode":"a8abe3629ad4bdbb","fromSide":"right","toNode":"d3b5babdd2b4edf5","toSide":"left"},
+		{"id":"cbd3fb1b6fa742bf","fromNode":"bc7c6c8a07346243","fromSide":"right","toNode":"65feda48d867ddeb","toSide":"left"},
+		{"id":"9a5f1cdde493cc47","fromNode":"65feda48d867ddeb","fromSide":"right","toNode":"567aae129b371e41","toSide":"left"},
+		{"id":"000b47bbbc2a39b7","fromNode":"2770e7906a97a8d0","fromSide":"top","toNode":"567aae129b371e41","toSide":"bottom","color":"1"},
+		{"id":"e430e52955d38742","fromNode":"bc7c6c8a07346243","fromSide":"right","toNode":"d66bfd76babac183","toSide":"left"},
+		{"id":"aee8980dec584620","fromNode":"d66bfd76babac183","fromSide":"right","toNode":"c1c341f22db1fe24","toSide":"left"},
+		{"id":"a5fcf1e5119685d5","fromNode":"8c01c2ae6aa675f4","fromSide":"bottom","toNode":"a8abe3629ad4bdbb","toSide":"top","fromEnd":"arrow","color":"1"},
+		{"id":"7c56a75eaef11c14","fromNode":"16abcc92bf1a1d78","fromSide":"right","toNode":"8edb1fe8551247f8","toSide":"left"},
+		{"id":"19b6d87c3153c82e","fromNode":"16abcc92bf1a1d78","fromSide":"right","toNode":"1f43bf3a4c056823","toSide":"left"}
+	]
+}
