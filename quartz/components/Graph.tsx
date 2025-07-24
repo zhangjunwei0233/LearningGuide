@@ -19,6 +19,7 @@ export interface D3Config {
   showTags: boolean
   focusOnHover?: boolean
   enableRadial?: boolean
+  showArrows?: boolean
 }
 
 interface GraphOptions {
@@ -41,6 +42,7 @@ const defaultOptions: GraphOptions = {
     removeTags: [],
     focusOnHover: false,
     enableRadial: false,
+    showArrows: true,
   },
   globalGraph: {
     drag: true,
@@ -56,6 +58,7 @@ const defaultOptions: GraphOptions = {
     removeTags: [],
     focusOnHover: true,
     enableRadial: true,
+    showArrows: true,
   },
 }
 

@@ -111,6 +111,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     showTags,
     focusOnHover,
     enableRadial,
+    showArrows,
   } = JSON.parse(graph.dataset["cfg"]!) as D3Config
 
   const data: Map<SimpleSlug, ContentDetails> = new Map(
@@ -563,10 +564,64 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     for (const l of linkRenderData) {
       const linkData = l.simulationData
       l.gfx.clear()
-      l.gfx.moveTo(linkData.source.x! + width / 2, linkData.source.y! + height / 2)
-      l.gfx
-        .lineTo(linkData.target.x! + width / 2, linkData.target.y! + height / 2)
-        .stroke({ alpha: l.alpha, width: 1, color: l.color })
+      
+      const sourceX = linkData.source.x! + width / 2
+      const sourceY = linkData.source.y! + height / 2
+      const targetX = linkData.target.x! + width / 2
+      const targetY = linkData.target.y! + height / 2
+      
+      // Calculate direction vector
+      const dx = targetX - sourceX
+      const dy = targetY - sourceY
+      const distance = Math.sqrt(dx * dx + dy * dy)
+      
+      if (distance > 0) {
+        // Normalize direction vector
+        const unitX = dx / distance
+        const unitY = dy / distance
+        
+        // Calculate line endpoint
+        let lineEndX = targetX
+        let lineEndY = targetY
+        
+        if (showArrows) {
+          const arrowSize = 6
+          const targetRadius = nodeRadius(linkData.target)
+          
+          // Calculate the endpoint of the line (offset by arrow size only)
+          lineEndX = targetX - unitX * (targetRadius + arrowSize * 0.5)
+          lineEndY = targetY - unitY * (targetRadius + arrowSize * 0.5)
+        }
+        
+        // Draw the line
+        l.gfx.moveTo(sourceX, sourceY)
+        l.gfx.lineTo(lineEndX, lineEndY)
+        l.gfx.stroke({ alpha: l.alpha, width: 1, color: l.color })
+        
+        // Draw arrow head if enabled
+        if (showArrows) {
+          const arrowSize = 6
+          const arrowAngle = Math.PI / 6 // 30 degrees
+          const targetRadius = nodeRadius(linkData.target)
+          
+          // Position arrow tip at the edge of the target node
+          const arrowTipX = targetX - unitX * targetRadius
+          const arrowTipY = targetY - unitY * targetRadius
+          
+          // Calculate arrow base points
+          const arrowX1 = arrowTipX - arrowSize * Math.cos(Math.atan2(dy, dx) - arrowAngle)
+          const arrowY1 = arrowTipY - arrowSize * Math.sin(Math.atan2(dy, dx) - arrowAngle)
+          const arrowX2 = arrowTipX - arrowSize * Math.cos(Math.atan2(dy, dx) + arrowAngle)
+          const arrowY2 = arrowTipY - arrowSize * Math.sin(Math.atan2(dy, dx) + arrowAngle)
+          
+          // Draw arrow triangle
+          l.gfx.moveTo(arrowTipX, arrowTipY)
+          l.gfx.lineTo(arrowX1, arrowY1)
+          l.gfx.lineTo(arrowX2, arrowY2)
+          l.gfx.lineTo(arrowTipX, arrowTipY)
+          l.gfx.fill({ alpha: l.alpha, color: l.color })
+        }
+      }
     }
 
     tweens.forEach((t) => t.update(time))

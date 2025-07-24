@@ -37,6 +37,7 @@ Component.Graph({
     removeTags: [], // what tags to remove from the graph
     showTags: true, // whether to show tags in the graph
     enableRadial: false, // whether to constrain the graph, similar to Obsidian
+    showArrows: true, // whether to show arrows on edges indicating link direction
   },
   globalGraph: {
     drag: true,
@@ -51,6 +52,7 @@ Component.Graph({
     removeTags: [], // what tags to remove from the graph
     showTags: true, // whether to show tags in the graph
     enableRadial: true, // whether to constrain the graph, similar to Obsidian
+    showArrows: true, // whether to show arrows on edges indicating link direction
   },
 })
 ```
