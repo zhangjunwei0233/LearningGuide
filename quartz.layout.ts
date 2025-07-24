@@ -44,7 +44,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Graph({
       localGraph: {
         fontSize: 0.3,
-        opacityScale: 2.0,
+        opacityScale: 1.5,
         showTags: false,
       },
       globalGraph: {
