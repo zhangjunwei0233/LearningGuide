@@ -1,5 +1,5 @@
 ---
-title: RNN
+title: 语言模型 (Language Model)
 draft: "false"
 tags:
   - NLP
@@ -17,7 +17,7 @@ $$
 
 ## 语言模型的实现
 
-### n-gram Language Model
+### 1. n-gram Language Model
 
 n-gram Language Model 是一种最简单的语言模型。它只通过每个单词的前$n-1$个单词来预测该单词，即将单词预测简化为一个**马尔可夫过程**，进而通过**条件概率公式**使用频率预测概率：
 $$
@@ -28,7 +28,7 @@ P(x^{(t+1)} | x^{(t)}, \dots, x^{(1)}) &= P(x^{(t+1)} | x^{(t)}, \dots, x^{t - n
 \end{array}
 $$
 
-### Recurrent Neural Networks (RNN)
+### 2. Recurrent Neural Networks (RNN)
 
 n-gram Language Model 的马尔可夫假设严重地限制了模型的语义理解能力，因此我们需要构造一种可以输入文本任意长，关键词在不同位置出现都等价的语言模型。
 
@@ -103,3 +103,9 @@ $$
 h^{(t)} = o^{(t)} \circ \tanh c^{(t)}
 $$
 4. 之后按照RNN的方式处理即可
+
+LSTM模型在经过一些优化之后，被成功应用于[[神经机器翻译|神经机器翻译]]领域
+
+
+###  3. [[Transformer架构|Transformer]]
+ 

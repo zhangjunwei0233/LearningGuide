@@ -5,9 +5,20 @@ tags:
   - NLP
   - overview
 ---
+# 领域介绍
+
+**自然语言处理**是人工智能的关键分支，它致力于赋予计算机理解、生成和有效处理人类语言的能力，从而架起人机之间无缝沟通的桥梁。其核心研究与应用领域主要涵盖：
+
+1. **自然语言理解**
+
+- 让机器理解单词：[[词向量化 (Word2Vec)]]
+- 让机器理解句子结构：[[依存句法分析 (Dependency Parsing)]]
+
+2. **自然语言生成**：[[语言模型 (Language Model)]]
+
 # 学习资源
 
-## CS224N: Natural Language Processing
+## 1. CS224N: Natural Language Processing
 
 ### 课程简介
 
