@@ -1,6 +1,6 @@
 # 🚀 Learning Guide
 
-> A comprehensive, open-source learning resource for AI fundamemtals.
+> Aiming to build a comprehensive, open-source learning resource for AI fundamemtals.
 
 **🌐 Live Site**: [https://learning-guide.vercel.app/](https://learning-guide.vercel.app/)
 

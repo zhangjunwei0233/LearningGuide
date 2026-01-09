@@ -6,3 +6,24 @@
   --bodyFont: "LXGW WenKai TC", "Source Sans Pro", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
   --codeFont: "LXGW WenKai Mono TC", "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace !important;
 }
+
+.page .center article {
+  img {
+    display: block;
+    margin: 1.25rem auto;
+  }
+
+  figure {
+    text-align: center;
+
+    img {
+      margin: 0 auto;
+    }
+
+    figcaption {
+      text-align: center;
+      color: var(--gray);
+      margin-top: 0.5rem;
+    }
+  }
+}
