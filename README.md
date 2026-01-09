@@ -2,7 +2,7 @@
 
 > Aiming to build a comprehensive, open-source learning resource for AI fundamemtals.
 
-**🌐 Live Site**: [https://learning-guide.vercel.app/](https://learning-guide.vercel.app/)
+**🌐 Live Site**: [https://zhangjunwei0233.github.io/LearningGuide/](https://zhangjunwei0233.github.io/LearningGuide/)
 
 ## 📖 What is Learning Guide?
 
