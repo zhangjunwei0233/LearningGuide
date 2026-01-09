@@ -5,17 +5,17 @@ tags:
   - 机器学习
 ---
 
-## 问题
+## 一、问题
 
 给定**目标变量**y在**特征**x的一组取值$(x^{(1)},\dots,x^{(m)})$下的值$(y^{(1)}, \dots, y^{(m)})$，求变量y关于特征x的函数关系$y=h_\theta(x)$，其中$h_\theta$称为**假设函数**（默认为线性关系）
 
-## 思路
+## 二、思路
 
-### 假设函数
+### 1. 假设函数
 
 假设函数为$h_\theta(x)=\theta_{0}+\theta_{1}x$，其中$\theta_0$为偏置项（bias），$\theta_1$为权重
 
-### 代价函数
+### 2. 代价函数
 
 使用**均方误差**（Mean Squared Error, MSE）作为代价函数来衡量假设函数的准确程度：
 $$
@@ -45,7 +45,7 @@ y^{(m)}
 \end{bmatrix}
 $$
 
-### 最小化代价函数
+### 3. 最小化代价函数
 
 #### 批量梯度下降法 (Batch Gradient Descent)
 
@@ -83,18 +83,18 @@ $$
 - 梯度下降：适用于大数据集，需要选择学习率
 - 正规方程：适用于小数据集（n < 10000），无需迭代但计算复杂度为O(n³)
 
-## 优化
+## 三、优化
 
 ### 正则化 (Regularization)
 
 当模型复杂度过高时可能出现过拟合。通过对参数（除$\theta_{0}$外）添加惩罚项来缓解：
 
-**岭回归 (Ridge Regression, L2正则化)**：
+- **岭回归 (Ridge Regression, L2正则化)**：
 $$
 J(\theta)= \frac{1}{2m}\left[ \sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} + \lambda \sum_{j=1}^{n}\theta_j^{2} \right]
 $$
 
-**Lasso回归 (L1正则化)**：
+- **Lasso回归 (L1正则化)**：
 $$
 J(\theta)= \frac{1}{2m}\left[ \sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)})^{2} + \lambda \sum_{j=1}^{n}|\theta_j| \right]
 $$
@@ -104,7 +104,7 @@ $$
 - $\lambda$太大：可能导致欠拟合
 - $\lambda$适中：在偏差和方差之间取得平衡
 
-## 推广
+## 四、推广
 
 1. 多变量推广：[[多变量线性回归 (Linear Regression with multiple variables)]]
 2. 高次推广：[[多项式回归 (Polynomial Regression)]]

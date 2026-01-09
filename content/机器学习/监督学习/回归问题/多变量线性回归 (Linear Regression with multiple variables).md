@@ -5,11 +5,11 @@ tags:
   - 机器学习
 ---
 
-## 问题
+## 一、问题
 
 在单变量线性回归的基础上，将特征变量个数扩展到n个$X_{1}, \dots, X_{n}$
 
-## 思路
+## 二、思路
 
 基本思路不变，假设函数推广为$h_\theta(x)=\theta_{0}+\theta_{1} x_{1} + \dots + \theta_{n}x_{n}$
 
@@ -18,7 +18,7 @@ $$
 h_\theta(x) = \theta^T x = \begin{bmatrix}\theta_0 & \theta_1 & \cdots & \theta_n\end{bmatrix} \begin{bmatrix}1 \\ x_1 \\ \vdots \\ x_n\end{bmatrix}
 $$
 
-### 代价函数
+### 1. 代价函数
 
 $$
 J(\theta) = \frac{1}{2m}(X\theta - y)^T(X\theta - y)
@@ -46,41 +46,41 @@ y^{(m)}
 \end{bmatrix}
 $$
 
-### 梯度下降法
+### 2. 梯度下降法
 
 $$
 \theta := \theta - \frac{\alpha}{m}X^T(X\theta - y)
 $$
 
-### 正规方程法
+### 3. 正规方程法
 
 $$
 \theta = (X^{T}X)^{-1}X^{T}y
 $$
 
-## 优化
+## 三、优化
 
-### 特征缩放 (Feature Scaling)
+### 1. 特征缩放 (Feature Scaling)
 
 不同特征的数值范围可能差异很大，需要标准化：
 
-**标准化 (Standardization)**：
+- **标准化 (Standardization)**：
 $$
 x_j = \frac{x_j - \mu_j}{\sigma_j}
 $$
 
-**归一化 (Normalization)**：
+- **归一化 (Normalization)**：
 $$
 x_j = \frac{x_j - \min(x_j)}{\max(x_j) - \min(x_j)}
 $$
 
-### 学习率选择
+### 2. 学习率选择
 
 - 太小：收敛慢
 - 太大：可能不收敛或发散
 - 常用值：0.3, 0.1, 0.03, 0.01, 0.003, 0.001
 
-### 梯度下降 vs 正规方程
+### 3. 梯度下降 vs 正规方程
 
 | 梯度下降      | 正规方程         |
 | --------- | ------------ |
