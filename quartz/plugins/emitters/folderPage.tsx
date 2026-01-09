@@ -104,12 +104,7 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
   const opts: FullPageLayout = {
     ...sharedPageComponents,
     ...defaultListPageLayout,
-    pageBody: FolderContent({
-      sort: userOpts?.sort,
-      showListing: false,
-      showFolderCount: false,
-      showSubfolders: false,
-    }),
+    pageBody: FolderContent({ sort: userOpts?.sort }),
     ...userOpts,
   }
 
@@ -141,8 +136,8 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
         allFiles.flatMap((data) => {
           return data.slug
             ? _getFolders(data.slug).filter(
-                (folderName) => folderName !== "." && folderName !== "tags",
-              )
+              (folderName) => folderName !== "." && folderName !== "tags",
+            )
             : []
         }),
       )

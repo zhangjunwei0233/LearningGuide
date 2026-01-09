@@ -39,3 +39,4 @@ aliases:
 **Cheetsheet入口**：
 - [[主成分分析 (Principal Component Analysis, PCA)|🔸 主成分分析 (PCA)]] - 线性降维经典方法
 
+---

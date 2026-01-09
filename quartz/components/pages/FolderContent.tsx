@@ -16,14 +16,12 @@ interface FolderContentOptions {
    */
   showFolderCount: boolean
   showSubfolders: boolean
-  showListing: boolean
   sort?: SortFn
 }
 
 const defaultOptions: FolderContentOptions = {
   showFolderCount: true,
   showSubfolders: true,
-  showListing: true,
 }
 
 export default ((opts?: Partial<FolderContentOptions>) => {
@@ -107,20 +105,18 @@ export default ((opts?: Partial<FolderContentOptions>) => {
     return (
       <div class="popover-hint">
         <article class={classes}>{content}</article>
-        {options.showListing && (
-          <div class="page-listing">
-            {options.showFolderCount && (
-              <p>
-                {i18n(cfg.locale).pages.folderContent.itemsUnderFolder({
-                  count: allPagesInFolder.length,
-                })}
-              </p>
-            )}
-            <div>
-              <PageList {...listProps} />
-            </div>
+        <div class="page-listing">
+          {options.showFolderCount && (
+            <p>
+              {i18n(cfg.locale).pages.folderContent.itemsUnderFolder({
+                count: allPagesInFolder.length,
+              })}
+            </p>
+          )}
+          <div>
+            <PageList {...listProps} />
           </div>
-        )}
+        </div>
       </div>
     )
   }

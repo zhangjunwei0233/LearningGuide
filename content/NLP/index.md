@@ -41,3 +41,5 @@ Stanford 的 NLP 入门课程，由自然语言处理领域的巨佬 Chris Manni
 - 课程视频：B 站搜索 CS224n
 - 课程教材：无
 - 课程作业：[http://web.stanford.edu/class/cs224n/index.html](http://web.stanford.edu/class/cs224n/index.html)，5 个编程作业 + 1 个 Final Project
+
+---

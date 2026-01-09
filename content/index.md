@@ -2,17 +2,17 @@
 title: 欢迎来到 Learning Guide!
 ---
 
-**Learning Guide** 是一个为给 AI 入门者打造的学习项目，提供**系统性学习路线图**与**实用 Cheatsheet**，帮助你从零开始掌握人工智能核心知识。
+**Learning Guide** 是一个为给 AI 入门者打造的学习项目，提供**学习路线图**与**实用 Cheatsheet**，帮助你从零开始掌握人工智能核心知识。
 
 ## 📚 学习模块
 
-### [[概率论与数理统计/index|概率论与数理统计]]
+### 概率论与数理统计
 为机器学习提供数学基础，包括概率分布、统计推断、贝叶斯方法等重要概念。
 
-### [[机器学习/index|机器学习 (Machine Learning)]]
+### 机器学习 (Machine Learning)
 从基础概念到实际应用，涵盖监督学习、无监督学习等核心算法
 
-### [[NLP/index|自然语言处理 (Natural Language Processing, NLP)]]
+### 自然语言处理 (Natural Language Processing, NLP)
 人工智能领域的一个核心分支，致力于让计算机理解、生成和处理人类语言，实现人机间的自然交互
 
 ## 🧭 如何使用本指南
