@@ -95,6 +95,11 @@ function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElemen
   return li
 }
 
+function folderHref(currentSlug: FullSlug, folderSlug: FullSlug): string {
+  const href = resolveRelative(currentSlug, folderSlug)
+  return href.endsWith("/") ? href : `${href}/`
+}
+
 function createFolderNode(
   currentSlug: FullSlug,
   node: FileTrieNode,
@@ -115,7 +120,7 @@ function createFolderNode(
     // Replace button with link for link behavior
     const button = titleContainer.querySelector(".folder-button") as HTMLElement
     const a = document.createElement("a")
-    a.href = resolveRelative(currentSlug, folderPath)
+    a.href = folderHref(currentSlug, folderPath)
     a.dataset.for = folderPath
     a.className = "folder-title"
     a.textContent = node.displayName
