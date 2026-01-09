@@ -74,5 +74,18 @@ export const defaultListPageLayout: PageLayout = {
     }),
     Component.Explorer(),
   ],
-  right: [],
+  right: [
+    Component.Graph({
+      localGraph: {
+        fontSize: 0.3,
+        opacityScale: 1.5,
+        showTags: false,
+      },
+      globalGraph: {
+        fontSize: 0.3,
+        showTags: false,
+      },
+    }),
+    Component.DesktopOnly(Component.TableOfContents()),
+  ],
 }

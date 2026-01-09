@@ -17,7 +17,7 @@ import {
 import { Text, Graphics, Application, Container, Circle } from "pixi.js"
 import { Group as TweenGroup, Tween as Tweened } from "@tweenjs/tween.js"
 import { registerEscapeHandler, removeAllChildren } from "./util"
-import { FullSlug, SimpleSlug, getFullSlug, resolveRelative, simplifySlug } from "../../util/path"
+import { FullSlug, SimpleSlug, getFullSlug, resolveRelative, simplifySlug, stripSlashes } from "../../util/path"
 import { D3Config } from "../Graph"
 
 type GraphicsInfo = {
@@ -93,7 +93,12 @@ async function determineGraphicsAPI(): Promise<"webgpu" | "webgl"> {
 }
 
 async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
-  const slug = simplifySlug(fullSlug)
+  const normalizeSimpleSlug = (s: SimpleSlug): SimpleSlug => {
+    if (s === "/") return s
+    return (stripSlashes(s, true).replace(/\/$/, "")) as SimpleSlug
+  }
+
+  const slug = normalizeSimpleSlug(simplifySlug(fullSlug))
   const visited = getVisited()
   removeAllChildren(graph)
 
@@ -116,7 +121,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 
   const data: Map<SimpleSlug, ContentDetails> = new Map(
     Object.entries<ContentDetails>(await fetchData).map(([k, v]) => [
-      simplifySlug(k as FullSlug),
+      normalizeSimpleSlug(simplifySlug(k as FullSlug)),
       v,
     ]),
   )
@@ -125,12 +130,14 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   const validLinks = new Set(data.keys())
 
   const tweens = new Map<string, TweenNode>()
-  for (const [source, details] of data.entries()) {
+  for (const [rawSource, details] of data.entries()) {
+    const source = normalizeSimpleSlug(rawSource)
     const outgoing = details.links ?? []
 
     for (const dest of outgoing) {
-      if (validLinks.has(dest)) {
-        links.push({ source: source, target: dest })
+      const normalizedDest = normalizeSimpleSlug(dest)
+      if (validLinks.has(normalizedDest)) {
+        links.push({ source: source, target: normalizedDest })
       }
     }
 

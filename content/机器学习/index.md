@@ -1,9 +1,10 @@
 ---
-title: 机器学习总览
+title: 机器学习
 draft: "false"
 tags:
   - 机器学习
-  - overview
+aliases:
+  - 机器学习
 ---
 
 # 领域介绍
@@ -14,10 +15,10 @@ tags:
 
 根据学习过程中使用的数据是否有"正确答案"（label），机器学习主要分为两类：
 
-### 1. [[监督学习总览|监督学习 (Supervised Learning)]]
+### 1. [[机器学习/监督学习/index|监督学习 (Supervised Learning)]]
 **核心思想**：从带标签的数据中学习映射关系
 
-### 2. [[无监督学习总览|无监督学习 (Unsupervised Learning)]]  
+### 2. [[机器学习/无监督学习/index|无监督学习 (Unsupervised Learning)]]
 **核心思想**：从无标签数据中发现隐藏结构
 
 # 学习资源

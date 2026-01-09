@@ -1,9 +1,10 @@
 ---
-title: NLP总览
+title: NLP
 draft: "false"
 tags:
   - NLP
-  - overview
+aliases:
+  - NLP
 ---
 # 领域介绍
 

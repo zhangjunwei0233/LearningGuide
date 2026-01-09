@@ -1,8 +1,10 @@
 ---
-title: 无监督学习总览
+title: 无监督学习
 draft: "false"
 tags:
   - 机器学习
+aliases:
+  - 无监督学习
 ---
 
 ## 一、核心思想
@@ -36,3 +38,4 @@ tags:
 
 **Cheetsheet入口**：
 - [[主成分分析 (Principal Component Analysis, PCA)|🔸 主成分分析 (PCA)]] - 线性降维经典方法
+

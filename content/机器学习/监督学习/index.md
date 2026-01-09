@@ -1,8 +1,10 @@
 ---
-title: 监督学习总览
+title: 监督学习
 draft: "false"
 tags:
   - 机器学习
+aliases:
+  - 监督学习
 ---
 
 ## 一、核心思想
@@ -28,3 +30,4 @@ tags:
 ### [[单变量线性回归 (Linear Regression with one variable)|回归问题 (Regression)]]
 
 ### [[逻辑回归 (Logistic Regression)|分类问题 (Classification)]]
+
