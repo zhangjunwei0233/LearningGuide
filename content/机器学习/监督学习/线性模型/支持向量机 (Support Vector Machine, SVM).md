@@ -1,5 +1,5 @@
 ---
-title: 支持向量机
+title: 支持向量机 (Support Vector Machine, SVM)
 draft: "false"
 tags:
   - 机器学习
