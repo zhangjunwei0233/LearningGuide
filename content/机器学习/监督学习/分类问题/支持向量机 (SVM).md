@@ -15,20 +15,20 @@ tags:
 ![[Pasted image 20260110111204.png|300]]
 
 $$
-\begin{align}
+\begin{align*}
 m &= \frac{1}{2} \times \left( \frac{w}{\| w \|} \right)^{T} (x^{(+)} - x^{(-)}) \\
 &= \frac{1}{2 \|w\|} \times (w^{T}x^{(+)} - w^{T}x^{(-)}) \\
 &= \frac{1}{2 \|w\|} \times (1 - (-1)) \\
 &= \frac{1}{\|w\|}
-\end{align}
+\end{align*}
 $$
 因此，最大化间隔等价于最小化$\|w\|$，其中$(w,b)$是典型分类超平面。结合分类任务本来的要求，新的任务可以形式化定义为，称为**SVM优化问题**：
 
 $$
-\begin{align}
+\begin{align*}
 & \min_{w} \|w\|^{2} \\
 \text{s.t.} \quad & y^{(i)}(w^{T}x^{(i)} + b) \geq 1, i = 1, \dots, n
-\end{align}
+\end{align*}
 $$
 
 ## 二、求解方法
@@ -37,11 +37,11 @@ $$
 
 对于问题
 $$
-\begin{align}
+\begin{align*}
 & \min_{w} f(w) \\
 \text{s.t.} \quad & g_{i}(w) \leq 0, i = 1, \dots, k \\
 & h_{j}(w) = 0, j = 1, \dots, l
-\end{align}
+\end{align*}
 $$
 
 构造其拉格朗日型为：
@@ -80,10 +80,10 @@ $$
 
 首先使用拉格朗日乘值法转化原始问题为：
 $$
-\begin{align}
+\begin{align*}
 & \min_{w, b} \max_{\alpha} L_{p} (w, b, \alpha) \\
 & L_{p}(w, b, \alpha) = \frac{1}{2} \|w\|^{2} + \sum_{i = 1}^{n} \alpha_{i} [1 - y^{(i)}(w^{T}x^{(i)} + b)]
-\end{align}
+\end{align*}
 $$
 又由于该问题满足强对偶定理条件，故可进一步转化为其对偶问题：
 $$
@@ -102,17 +102,17 @@ w = \sum_{i = 1}^{n} \alpha_{i}y^{(i)} x^{(i)} \\
 $$
 代回可得：
 $$
-\begin{align}
+\begin{align*}
 L_{d}(\alpha) &= -\frac{1}{2} w^{T}w + \sum_{i = 1}^{n}\alpha_{i} \\
 &= -\frac{1}{2}\sum_{i}\sum_{j}\alpha_{i} \alpha_{j} y^{(i)}y^{(j)}(x^{(i)})^{T}x^{(j)} + \sum_{i = 1}^{n}\alpha_{i}
-\end{align}
+\end{align*}
 $$
 接下来只需求解：
 $$
-\begin{align}
+\begin{align*}
 & \max_{\alpha \in \mathbb{R}^{n}, \alpha \geq 0} \left( -\frac{1}{2} \sum_{i}\sum_{j} \alpha_{i} \alpha_{j} y^{(i)} y^{(j)} (x^{(i)})^{T} x^{(j)} + \sum_{i = 1}^{n}\alpha_{i} \right) \\
 \text{s.t.} \quad & \sum_{i = 1}^{n}\alpha_{i}y^{(i)} = 0
-\end{align}
+\end{align*}
 $$
 这仍然是一个二次规划问题，但是负责度取决于样本数$n$而不再是样本维度$d$，可是使用**SMO算法**高效求解。
 
@@ -150,18 +150,18 @@ $$
 
 如此一来，原始的优化问题变为：
 $$
-\begin{align}
+\begin{align*}
 & \min_{w} \|w\|^{2} \\
 \text{s.t.} \quad & y^{(i)}(w^{T}\phi (x^{(i)}) + b) \geq 1, i = 1, \dots, n
-\end{align}
+\end{align*}
 $$
 
 对应的对偶优化问题和判别函数变为：
 $$
-\begin{align}
+\begin{align*}
 & \max_{\alpha \in \mathbb{R}^{n}, \alpha \geq 0} \left( -\frac{1}{2} \sum_{i}\sum_{j} \alpha_{i} \alpha_{j} y^{(i)} y^{(j)} \phi(x^{(i)})^{T} \phi (x^{(j)}) + \sum_{i = 1}^{n}\alpha_{i} \right) \\
 \text{s.t.} \quad & \sum_{i = 1}^{n}\alpha_{i}y^{(i)} = 0
-\end{align}
+\end{align*}
 $$
 $$
 f(x) = \sum_{x^{(i) \in \mathcal{SV}}} \alpha_{i} y^{(i)} \phi(x^{(i)})^{T} \phi(x) + b
@@ -189,10 +189,10 @@ $$
 
 原始的优化任务变为：
 $$
-\begin{align}
+\begin{align*}
 & \min_{w} \frac{1}{ 2}\|w\|^{2} + C\sum_{i = 1}^{N} \xi_{i} \\
 \text{s.t.} \quad & y^{(i)}(w^{T}x^{(i)} + b) \geq 1 - \xi_{i}, \forall i, \xi_{i} \geq 0
-\end{align}
+\end{align*}
 $$
 $\xi_{i}$的含义为：
 - 若$\xi_{i} = 0$，则$x^{(i)}$在分离超平面之外，被正确分类
