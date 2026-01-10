@@ -1,6 +1,6 @@
 ---
 title: 监督学习
-draft: "false"
+draft: false
 tags:
   - 机器学习
 aliases:
@@ -44,6 +44,6 @@ aliases:
 
 ### 4. 集成模型
 
-组合多个模型以提升整体的性能。常见的有Bagging策略和Boosting策略。
+组合多个模型以提升整体的性能。常见的有随机采样，并行训练多个子分类器的[[Bagging算法|Bagging算法]]和动态样本加权，串行训练多个弱分类器的[[Boosting算法|Boosting算法]]。
 
 ---
