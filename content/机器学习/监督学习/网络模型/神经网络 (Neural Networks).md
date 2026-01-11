@@ -115,11 +115,12 @@ $$
 	$$\delta^{(l)} = \frac{\partial L}{\partial z^{(l)}}=\frac{\partial L}{\partial z^{(l+1)}} \frac{\partial z^{(l+1)}}{\partial a^{(l)}} \frac{\partial a^{(l)}}{\partial z^{(l)}}=(W^{(l+1)T} \delta^{(l+1)}) \odot g'(z^{(l)})$$
    - 参数梯度：
 	$$
-     \frac{\partial L}{\partial W^{(l)}} =\frac{\partial L}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial W^{(l)}}= \delta^{(l)} a^{(l-1)T}, \quad \frac{\partial L}{\partial b^{(l)}} = \frac{\partial L}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial b^{(l)}}=\delta^{(l)}$$
+     \frac{\partial L}{\partial W^{(l)}} =\frac{\partial L}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial W^{(l)}}= \delta^{(l)} a^{(l-1)T}, \quad \frac{\partial L}{\partial b^{(l)}} = \frac{\partial L}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial b^{(l)}}=\delta^{(l)}
+     $$
 
 算法流程的流程可以表示为：
 
-```text
+```
 for each training example (x, y):
     1. 前向传播：计算网络输出 ŷ
     2. 计算损失 L(ŷ, y)

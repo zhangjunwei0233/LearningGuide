@@ -25,7 +25,7 @@ tags:
 
 伪代码描述如下：
 
-```plaintext
+```
 procedure TREEGENERATE(D, A)
 	Initialize: D = {(x1,y1), ..., (xn, yn)}, A = {a1, ..., ad}
 	Generate node
