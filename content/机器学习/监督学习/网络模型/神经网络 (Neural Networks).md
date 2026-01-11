@@ -4,88 +4,401 @@ tags:
   - 机器学习
 draft: "false"
 ---
-## 问题
+神经网络是由简单的（通常是自适应的）元素，及其分层组织组成的大规模、并行、互连网络，旨在以类似于生物神经系统的方式，与现实世界的对象进行交互。
 
-当特征数量很大时，传统算法计算复杂度过高；当需要学习复杂非线性关系时，多项式特征会导致特征爆炸
+## 一、感知机
 
-## 基本思路
-
-### 神经元模型
-
-神经网络由多层神经元组成：
-- **输入层 (Input Layer)**：接收原始特征
-- **隐藏层 (Hidden Layer)**：进行特征变换
-- **输出层 (Output Layer)**：产生最终预测
-
-### 前向传播 (Forward Propagation)
-
-设第$l$层有$s_l$个神经元，激活函数为$g(z)$：
-
+感知机 (Perceptron) 由线性函数和非线性激活函数组成：
 $$
-a^{(l+1)} = g(\Theta^{(l)} a^{(l)})
+y = \sigma\left( \sum_{i = 1}^{n} x_{i}w_{i} - w_{0} \right)
+$$
+其中非线性激活函数$\sigma$为sigmoid函数，输入输出不限于布尔值，权重和阈值可以通过分析或者学习算法来确定。
+
+感知机可以正确表示布尔逻辑AND/OR/NOT：
+- 与逻辑AND：$x_{1} \wedge x_{2}: \{ (0, 0;0), (0, 1;0),  (1, 0;0), (1, 1;1) \}$
+	- 令$w_{1}=w_{2}=1, w_{0}=1.5$，则$y = 1$当且仅当$x_{1}=x_{2}=1$
+- 或逻辑OR：$x_{1} \vee x_{2}: \{ (0, 0;0), (0, 1;1),  (1, 0;1), (1, 1;1) \}$
+	- 令$w_{1}=w_{2}=1, w_{0}=0.5$，则$y=1$当且仅当$x_{1}=1$或$x_{2}=1$
+- 非逻辑NOT：$\neg x_{1}: \{ (0;1), (1;0) \}$
+	- 令$w_{1}=-1, w_{2}=0,w_{0}=-0.5$，则$y$为$x_{1}$的非
+
+![[Pasted image 20260111114225.png|500]]
+
+一个很自然的问题就是：**感知机能表示异或 XOR 吗？**
+
+异或问题是线性不可分的问题，因此单个感知机不能表示异或，需要添加隐藏层：
+
+![[Pasted image 20260111114446.png|500]]
+
+## 二、前馈神经网络
+
+由前面的内容可知，想要提高感知机的表达能力，需要构建多层感知机结构，这就形成了前馈神经网络：
+
+![[Pasted image 20260111114841.png|300]]
+
+**前馈神经网络**也称为深度前馈网络或多层感知机，是典型的深度学习模型，目标是逼近特定函数$f^{*}(x)$ （通常是Bayes最优决策函数）
+- **前馈**：信息从输入$x$流经用于定义函数$f$的中间计算过程最终到达输出$y$，不存在将模型输出反馈回自身的连接结构
+- **网络**：由不同函数复合而成，函数复合的方式由有向无环图描述
+
+### 1. 网络架构
+
+#### a. 隐层单元
+
+神经网络的每一层对输入做线性仿射变换后计算其非线性激活值。完整这一流程的单元称为隐层单元$h = g(W^{T}x + c)$。非线性的激活函数有很多选择，常见的有：
+- **ReLU及其扩展**：$g(z) = \max\{ 0, z \} + \alpha \min\{ 0, z \}$
+	- $\alpha=0$：标准ReLU
+	- $\alpha = -1$：绝对值矫正
+	- $\alpha = 0.01$：Leaky ReLU
+	- $\alpha$待学习：PReLU
+- **Sigmoid函数**：$g(z) = \sigma(z) = \frac{e^{z}}{1 + e^{z}}$
+	- Sigmoid激活函数在两侧趋于平缓，可能导致深层的神经网络在训练中**梯度消失**
+- **Tangent函数**：$g(z) = \tanh(z)$
+	- $\tanh(z) = 2\sigma(2z) - 1$
+
+#### b. 输出单元
+
+在神经网络中，最后输出的隐藏层表征$h$需要经过额外的变换才能得到满足任务要求的输出。完成这一变换的单元称为**输出单元**。对应不同任务，常见的输出单元有：
+- **线性单元 (回归任务)**：$\hat{y} = W^{T}h + b$
+	- 假设输出$y$服从条件高斯分布$p(y|x) = \mathcal{N}(y;\hat{y},I)$，此时最大化对数似然等价于$L_{2}$损失函数，因此损失函数一般使用$L_{2}$损失
+- **Sigmoid单元 (二分类任务)**：$\hat{y} =\sigma(w^{T}h + b)$
+	- 假设输出$y$服从二项分布$B(n, \hat{y})$。此时最大化对数似然等价于最小化Logistic损失
+- **Softmax单元 (多分类任务)**：$\hat{y} = softmax(W^{T}h + b)$
+	- 假设输出$y$服从多项分布$M(n, \hat{y})$，最大化对数似然等价于最小化交叉熵损失
+
+
+#### c. 宽度与深度
+
+- **宽度**：根据**通用近似定理**，带有sigmoid类型激活函数的单隐层和线性输出单元的前馈神经网络，随着隐藏层宽度增加，可以任意精度逼近Borel可测函数。
+- **深度**：相比于浅层神经网络，深层神经网络实现相同表达力所需要的单元数显著减少。
+### 2. 训练算法
+
+#### a. 损失函数
+
+与其他参数模型相同，模型的损失函数选择为**负对数条件似然/交叉熵损失**：
+$$
+R_{n}(\theta) = - \mathbb{E}_{x\sim \hat{p}_{x, data}} \mathbb{E}_{y \sim \hat{p}_{y|x, data}} \log p_{\theta}(y|x)
+$$
+在特定的输出分布下，负对数似然损失会退化回其他特定的损失函数，如：
+- 若数据分布满足高斯分布$p_{\theta}(\cdot|x) = \mathcal{N}(f(x;\theta),I)$，交叉熵损失函数退化为$L_{2}$损失函数，且其贝叶斯最优决策为条件期望$\mathbb{E}(y|x)$
+$$
+R_{n}(\theta) = \frac{1}{2} \mathbb{E}_{x,y \sim \hat{p}_{data}} \| y - f(x;\theta) \|_{2}^{2} + const
+$$
+- 若数据分布满足拉普拉斯分布，则此时损失函数退化为$L_{1}$损失函数，贝叶斯最优决策变为条件中位数
+$$
+R_{n}(\theta) = \mathbb{E}_{x, y \sim \hat{p}_{data}} \| y - f(x;\theta) \|_{1}
+$$
+- 若数据分布满足二项分布$B(f(x;\theta))$，损失会退化到Logistic损失，贝叶斯最优决策变为最大后验概率
+$$
+R_{n}(\theta) = -[y\log f(x;\theta) + (1-y)\log(1 - f(x;\theta))]
+$$
+- 若数据分布满足多项分布$M(1, f(x;\theta))$，损失会退化为交叉熵损失，贝叶斯最优决策为最大后验概率
+$$
+R_{n}(\theta) = - \sum_{c = 1}^{C} y_{c}\log f(x;\theta)
 $$
 
-其中：
-- $a^{(l)}$：第$l$层的激活值
-- $\Theta^{(l)}$：第$l$层到第$l+1$层的权重矩阵
-- $g(z)$：激活函数（通常为sigmoid函数）
+> [!note] 对于损失函数的理解
+> 先前遇到过的绝大多数损失函数（除了SVM使用的Hinge Loss）全都可以看作是**负对数似然损失**在特定概率分布假设下的退化形式。
 
-**详细计算过程**：
+#### b. 反向传播 (Back Propagation, BP) 算法
+
+反向传播算法是训练神经网络的核心算法，它基于**链式法则**（chain rule）高效计算损失函数相对于所有参数的梯度。算法的核心思想可以概括为"**前向传播计算输出，反向传播计算梯度**"。
+
+在神经网络中，损失函数 $L$ 是网络输出的复合函数：
+1. **前向传播**：从输入层到输出层，逐层计算激活值$$z^{(l)} = W^{(l)} a^{(l-1)} + b^{(l)}, \quad a^{(l)} = g(z^{(l)})$$其中 $a^{(0)} = x$（输入），$a^{(L)} = \hat{y}$（输出）
+
+2. **反向传播**：从输出层到输入层，逐层计算梯度
+   - 输出层误差：$\delta^{(L)} = \frac{\partial L}{\partial z^{(L)}} = \frac{\partial L}{\partial a^{(L)}} \odot g'(z^{(L)})$
+   - 隐藏层误差：$\delta^{(l)} = \frac{\partial L}{\partial z^{(l)}}=\frac{\partial L}{\partial z^{(l+1)}} \frac{\partial z^{(l+1)}}{\partial a^{(l)}} \frac{\partial a^{(l)}}{\partial z^{(l)}}=(W^{(l+1)T} \delta^{(l+1)}) \odot g'(z^{(l)})$
+   - 参数梯度：$$
+     \frac{\partial L}{\partial W^{(l)}} =\frac{\partial L}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial W^{(l)}}= \delta^{(l)} a^{(l-1)T}, \quad \frac{\partial L}{\partial b^{(l)}} = \frac{\partial L}{\partial z^{(l)}} \frac{\partial z^{(l)}}{\partial b^{(l)}}=\delta^{(l)}$$
+
+算法流程的流程可以表示为：
+
+```
+for each training example (x, y):
+    1. 前向传播：计算网络输出 ŷ
+    2. 计算损失 L(ŷ, y)
+    3. 反向传播：计算梯度 ∂L/∂θ
+    4. 更新参数：θ ← θ - η·∂L/∂θ
+```
+
+> [!note]- 反向传播计算流程示例
+> **网络结构**：
+> - 输入层：2个神经元（x₁, x₂）
+> - 隐藏层：2个神经元（使用Sigmoid激活）
+> - 输出层：1个神经元（使用Sigmoid激活，二分类）
+> - 损失函数：二元交叉熵
+> 
+> **网络参数**：
+> ```
+> 输入: x = [0.5, 0.3]
+> 真实标签: y = 1
+> 
+> 权重初始化:
+> W¹ = [[0.1, 0.2],   b¹ = [0.1, 0.2]
+>       [0.3, 0.4]]
+> W² = [[0.5],         b² = [0.3]
+>       [0.6]]
+> ```
+> 
+> **步骤1：前向传播**
+> 1. **输入层到隐藏层**：
+>    $$
+>    z^1 = W^1 x + b^1 = 
+>    \begin{bmatrix}
+>    0.1 & 0.2 \\
+>    0.3 & 0.4
+>    \end{bmatrix}
+>    \begin{bmatrix}
+>    0.5 \\
+>    0.3
+>    \end{bmatrix}
+>    + 
+>    \begin{bmatrix}
+>    0.1 \\
+>    0.2
+>    \end{bmatrix}
+>    = 
+>    \begin{bmatrix}
+>    0.1×0.5 + 0.2×0.3 + 0.1 \\
+>    0.3×0.5 + 0.4×0.3 + 0.2
+>    \end{bmatrix}
+>    = 
+>    \begin{bmatrix}
+>    0.21 \\
+>    0.47
+>    \end{bmatrix}
+>    $$
+> 
+>    $$
+>    a^1 = \sigma(z^1) = 
+>    \begin{bmatrix}
+>    \frac{1}{1+e^{-0.21}} \\
+>    \frac{1}{1+e^{-0.47}}
+>    \end{bmatrix}
+>    ≈ 
+>    \begin{bmatrix}
+>    0.552 \\
+>    0.615
+>    \end{bmatrix}
+>    $$
+> 
+> 2. **隐藏层到输出层**：
+>    $$
+>    z^2 = W^2 a^1 + b^2 = 
+>    \begin{bmatrix}
+>    0.5 & 0.6
+>    \end{bmatrix}
+>    \begin{bmatrix}
+>    0.552 \\
+>    0.615
+>    \end{bmatrix}
+>    + 0.3
+>    = 0.5×0.552 + 0.6×0.615 + 0.3
+>    ≈ 0.276 + 0.369 + 0.3 = 0.945
+>    $$
+> 
+>    $$
+>    a^2 = \sigma(z^2) = \frac{1}{1+e^{-0.945}} ≈ 0.720
+>    $$
+> 
+>    网络预测输出：$\hat{y} = 0.720$
+> 
+> 3. **计算损失**（二元交叉熵）：
+>    $$
+>    L = -[y\log\hat{y} + (1-y)\log(1-\hat{y})] 
+>    = -[1×\log(0.720) + 0×\log(0.280)]
+>    ≈ -(-0.329) = 0.329
+>    $$
+> 
+> 
+> **步骤2：反向传播**
+> 4. **输出层梯度计算**：
+>    - 损失对输出的导数：
+>      $$
+>      \frac{\partial L}{\partial a^2} = -\frac{y}{a^2} + \frac{1-y}{1-a^2} 
+>      = -\frac{1}{0.720} + \frac{0}{0.280} ≈ -1.389
+>      $$
+>    - Sigmoid导数：$\sigma'(z) = \sigma(z)(1-\sigma(z)) = 0.720×(1-0.720) = 0.202$
+>    - 输出层误差：
+>      $$
+>      \delta^2 = \frac{\partial L}{\partial a^2} \cdot \sigma'(z^2) 
+>      = -1.389 × 0.202 ≈ -0.281
+>      $$
+>    - 权重梯度：
+>      $$
+>      \frac{\partial L}{\partial W^2} = \delta^2 \cdot a^{1T} 
+>      = -0.281 × 
+>      \begin{bmatrix}
+>      0.552 & 0.615
+>      \end{bmatrix}
+>      = 
+>      \begin{bmatrix}
+>      -0.155 & -0.173
+>      \end{bmatrix}
+>      $$
+>    - 偏置梯度：
+>      $$
+>      \frac{\partial L}{\partial b^2} = \delta^2 = -0.281
+>      $$
+> 
+> 5. **隐藏层梯度计算**：
+>    - 隐藏层误差：
+>      $$
+>      \delta^1 = (W^{2T} \delta^2) \odot \sigma'(z^1)
+>      $$
+>      其中：
+>      $$
+>      W^{2T} \delta^2 = 
+>      \begin{bmatrix}
+>      0.5 \\
+>      0.6
+>      \end{bmatrix}
+>      × (-0.281) = 
+>      \begin{bmatrix}
+>      -0.1405 \\
+>      -0.1686
+>      \end{bmatrix}
+>      $$
+>      $$
+>      \sigma'(z^1) = 
+>      \begin{bmatrix}
+>      0.552×(1-0.552) \\
+>      0.615×(1-0.615)
+>      \end{bmatrix}
+>      = 
+>      \begin{bmatrix}
+>      0.247 \\
+>      0.237
+>      \end{bmatrix}
+>      $$
+>      因此：
+>      $$
+>      \delta^1 = 
+>      \begin{bmatrix}
+>      -0.1405 \\
+>      -0.1686
+>      \end{bmatrix}
+>      \odot
+>      \begin{bmatrix}
+>      0.247 \\
+>      0.237
+>      \end{bmatrix}
+>      = 
+>      \begin{bmatrix}
+>      -0.0347 \\
+>      -0.0400
+>      \end{bmatrix}
+>      $$
+>    - 权重梯度：
+>      $$
+>      \frac{\partial L}{\partial W^1} = \delta^1 x^T 
+>      = 
+>      \begin{bmatrix}
+>      -0.0347 \\
+>      -0.0400
+>      \end{bmatrix}
+>      \begin{bmatrix}
+>      0.5 & 0.3
+>      \end{bmatrix}
+>      = 
+>      \begin{bmatrix}
+>      -0.0174 & -0.0104 \\
+>      -0.0200 & -0.0120
+>      \end{bmatrix}
+>      $$
+>    - 偏置梯度：
+>      $$
+>      \frac{\partial L}{\partial b^1} = \delta^1 = 
+>      \begin{bmatrix}
+>      -0.0347 \\
+>      -0.0400
+>      \end{bmatrix}
+>      $$
+> 
+> **步骤3：参数更新**
+> 
+> 假设学习率 $\eta = 0.1$：
+> 
+> 6. 更新输出层参数：
+>    $$
+>    W^2 \leftarrow W^2 - \eta \frac{\partial L}{\partial W^2} 
+>    = \begin{bmatrix} 0.5 \\ 0.6 \end{bmatrix} - 0.1 × \begin{bmatrix} -0.155 \\ -0.173 \end{bmatrix}
+>    = \begin{bmatrix} 0.5155 \\ 0.6173 \end{bmatrix}
+>    $$
+>    $$
+>    b^2 \leftarrow b^2 - \eta \frac{\partial L}{\partial b^2}
+>    = 0.3 - 0.1 × (-0.281) = 0.3281
+>    $$
+> 
+> 7. 更新隐藏层参数：
+>    $$
+>    W^1 \leftarrow W^1 - \eta \frac{\partial L}{\partial W^1}
+>    = \begin{bmatrix} 0.1 & 0.2 \\ 0.3 & 0.4 \end{bmatrix} - 0.1 × \begin{bmatrix} -0.0174 & -0.0104 \\ -0.0200 & -0.0120 \end{bmatrix}
+>    = \begin{bmatrix} 0.10174 & 0.20104 \\ 0.30200 & 0.40120 \end{bmatrix}
+>    $$
+>    $$
+>    b^1 \leftarrow b^1 - \eta \frac{\partial L}{\partial b^1}
+>    = \begin{bmatrix} 0.1 \\ 0.2 \end{bmatrix} - 0.1 × \begin{bmatrix} -0.0347 \\ -0.0400 \end{bmatrix}
+>    = \begin{bmatrix} 0.10347 \\ 0.20400 \end{bmatrix}
+>    $$
+> 
+
+
+#### c. 防止过拟合——正则化
+
+神经网络中常见的正则化方法有：
+- **添加惩罚参数**：$\tilde{J}(\theta;X,y) = J(\theta; X,y) + \lambda \Omega(\theta)$
+	- $L_{2}$正则化：$\Omega(\theta) = \frac{1}{2} \| w \|_{2}^{2}$，等价于权重衰减
+	- $L_{1}$正则化：$\Omega(\theta) = \| w \|_{1}$
+	- 带约束的优化：$\min_{\theta} J(\theta; X, y) \quad \text{s.t.} \quad \Omega(\theta) \leq k$
+- **早停**：记录并更新验证集损失最小的模型
+- **Dropout**，**参数共享**，**稀疏表示**，**模型集成**等等
+
+#### d. 优化算法
+
+常用的优化方法有：
+- **随机梯度下降 (SGD)**：
 $$
-z^{(l+1)} = \Theta^{(l)} a^{(l)} \quad (\text{加上bias项})
+\begin{align*}
+\hat{g} & \leftarrow \frac{1}{|S|} \nabla_{\theta} \left( \sum_{s\in S} L(f(x^{(s)};\theta), y^{(s)}) \right) \\
+\theta & \leftarrow \theta - \eta_{t} \hat{g}
+\end{align*}
 $$
+- **带动量的随机梯度下降 (SGDM)**：将历史梯度数据指数衰减累计
 $$
-a^{(l+1)} = g(z^{(l+1)})
+\begin{align*}
+\hat{g} & \leftarrow \frac{1}{|S|} \nabla_{\theta} \left( \sum_{s\in S} L(f(x^{(s)};\theta), y^{(s)}) \right) \\
+v & \leftarrow \alpha v - \eta_{t} \hat{g} \\
+\theta & \leftarrow \theta + v
+\end{align*}
+$$
+- **自适应学习率方法**：学习率随时间、维度变化
+	- **AdaGrad**:
+$$
+\begin{align*}
+r & \leftarrow r + g \odot g \\
+\theta & \leftarrow \theta - \frac{\eta_{t}}{\delta + \sqrt{ r }} \odot g
+\end{align*}
+$$
+	- **RMSProp**：在AdaGrad上引入滑动平均
+$$
+\begin{align*}
+r & \leftarrow \rho r + (1 - \rho) g \odot g \\
+\theta & \leftarrow \theta - \frac{\eta_{t}}{\sqrt{ \delta + r }} \odot g
+\end{align*}
+$$
+	- **Adam**：在RMSProp上引入动量
+$$
+\begin{align*}
+s & \leftarrow \rho_{1} s + (1 - \rho_{1})g, & \hat{s} = \frac{s}{1 - \rho_{1}^{t}}\\
+r & \leftarrow \rho_{2} r + (1 - \rho_{2}) g \odot g, & \hat{r} = \frac{r}{1 - \rho_{2}^{t}} \\
+\theta & \leftarrow \theta - \frac{\eta_{t}}{\delta + \sqrt{ \hat{r} }} \odot \hat{s}
+\end{align*}
 $$
 
-### 代价函数
+## 三、改进架构
 
-对于K类分类问题：
-$$
-J(\Theta) = -\frac{1}{m} \sum_{i=1}^{m} \sum_{k=1}^{K} \left[ y_k^{(i)} \log(h_\Theta(x^{(i)}))_k + (1-y_k^{(i)}) \log(1-(h_\Theta(x^{(i)}))_k) \right]
-$$
-$$
-+ \frac{\lambda}{2m} \sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} (\Theta_{ji}^{(l)})^2
-$$
+[[卷积神经网络 (CNN)]]
 
-### 最小化代价函数——反向传播算法 (Backpropagation)
-
-1. **前向传播**：计算所有层的激活值
-2. **计算输出层误差**：$\delta^{(L)} = a^{(L)} - y$
-3. **反向传播误差**：
-   $$
-   \delta^{(l)} = (\Theta^{(l)})^T \delta^{(l+1)} \cdot g'(z^{(l)})
-   $$
-4. **计算梯度**：
-   $$
-   \frac{\partial J}{\partial \Theta_{ij}^{(l)}} = \frac{1}{m} a_j^{(l)} \delta_i^{(l+1)} + \lambda \Theta_{ij}^{(l)} \quad (j \neq 0)
-   $$
-   $$
-   \frac{\partial J}{\partial \Theta_{i0}^{(l)}} = \frac{1}{m} a_0^{(l)} \delta_i^{(l+1)} \quad (\text{bias项})
-   $$
-5. **之后可使用梯度下降法处理**
-
-## 优化
-
-### 权重初始化
-
-**随机初始化**：避免对称性破缺
-$$
-\Theta_{ij}^{(l)} \sim \text{Uniform}[-\epsilon, \epsilon]
-$$
-其中 $\epsilon = \sqrt{\frac{6}{s_l + s_{l+1}}}$
-
-### 梯度检验 (Gradient Checking)
-
-使用数值方法验证反向传播的正确性：
-$$
-\frac{\partial J}{\partial \Theta} \approx \frac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}
-$$
-
-### 网络架构选择
-
-- **隐藏层数**：通常1-3层足够
-- **隐藏单元数**：通常比输入特征数多，但要防止过拟合
-- **输出层**：
-  - 二分类：1个单元
-  - 多分类：K个单元（K个类别）
+[[循环神经网络 (RNN)]]
