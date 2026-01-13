@@ -30,7 +30,7 @@ aliases:
 ### [[K-Means 聚类 (K-Means Clustering)|聚类分析 (Clustering)]]
 **目标**：将相似的数据点分组
 
-### [[主成分分析 (Principal Component Analysis, PCA)|维技术 (Dimensionality Reduction)]]
+### [[主成分分析 (Principal Component Analysis, PCA)|降维技术 (Dimensionality Reduction)]]
 **目标**：将高维数据映射到低维空间，保留重要信息
 
 
