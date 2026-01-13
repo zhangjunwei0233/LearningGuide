@@ -27,16 +27,11 @@ aliases:
 
 ## 三、主要问题类型
 
-### 聚类分析 (Clustering)
+### [[K-Means 聚类 (K-Means Clustering)|聚类分析 (Clustering)]]
 **目标**：将相似的数据点分组
 
-**Cheetsheet入口**：
-- [[K-Means 聚类 (K-Means Clustering)|🔸 K-Means 聚类]] - 最经典的聚类算法
-
-### 降维技术 (Dimensionality Reduction)
+### [[主成分分析 (Principal Component Analysis, PCA)|维技术 (Dimensionality Reduction)]]
 **目标**：将高维数据映射到低维空间，保留重要信息
 
-**Cheetsheet入口**：
-- [[主成分分析 (Principal Component Analysis, PCA)|🔸 主成分分析 (PCA)]] - 线性降维经典方法
 
 ---
